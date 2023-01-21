@@ -22,7 +22,7 @@
     "rescript": "*"
   },
   "dependencies": {
-    "sjcl": "^1.0.8"
+    "sjcl-complete": "^1.0.0"
   },
   "devDependencies": {
     "@dusty-phillips/rescript-zora": "^3.0.1",
