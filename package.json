@@ -1,0 +1,44 @@
+{
+  "name": "rescript-sjcl",
+  "description": "Rescript binding for sjcl",
+  "version": "0.0.1",
+  "scripts": {
+    "build": "rescript build",
+    "watch": "rescript build -w",
+    "clean": "rescript clean",
+    "test": "rescript && pta"
+  },
+  "keywords": [
+    "reasonml",
+    "reason",
+    "rescript",
+    "binding",
+    "rescript-sjcl",
+    "sjcl"
+  ],
+  "author": "daysv",
+  "license": "MIT",
+  "peerDependencies": {
+    "rescript": "*"
+  },
+  "dependencies": {
+    "sjcl": "^1.0.8"
+  },
+  "devDependencies": {
+    "@dusty-phillips/rescript-zora": "^3.0.1",
+    "pta": "^1.1.0",
+    "rescript": "*"
+  },
+  "files": [
+    "/src",
+    "/bsconfig.json"
+  ],
+  "homepage": "https://github.com/scrutin-app/rescript-sjcl",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/scrutin-app/rescript-sjcl.git"
+  },
+  "bugs": {
+    "url": "https://github.com/scrutin-app/rescript-sjcl/issues"
+  }
+}

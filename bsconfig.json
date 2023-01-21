@@ -1,0 +1,27 @@
+{
+  "name": "rescript-sjcl",
+  "version": "0.0.1",
+  "sources": [
+    {
+      "dir": "src",
+      "subdirs": true
+    },
+    {
+      "dir": "test",
+      "subdirs": true,
+      "type": "dev"
+    }
+  ],
+  "package-specs": {
+    "module": "commonjs",
+    "in-source": true
+  },
+  "suffix": ".bs.js",
+  "bs-dev-dependencies": [
+    "@dusty-phillips/rescript-zora",
+    "@ryyppy/rescript-promise"
+  ],
+  "warnings": {
+    "error" : "+101"
+  }
+}
