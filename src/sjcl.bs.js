@@ -5,7 +5,7 @@ var SjclComplete = require("sjcl-complete");
 
 var Bn = {};
 
-var a = new SjclComplete.bn(10);
+var a = new SjclComplete.bn("10");
 
 exports.Bn = Bn;
 exports.a = a;
