@@ -16,7 +16,7 @@
     "rescript-sjcl",
     "sjcl"
   ],
-  "author": "daysv",
+  "author": "mjal",
   "license": "MIT",
   "peerDependencies": {
     "rescript": "*"
