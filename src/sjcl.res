@@ -11,6 +11,33 @@ module Bn = {
   //let \"+" = (x, y) => x +. y
 }
 
-let a = Bn.new("10")//("Hello")
+module BitArray = {
+  type t
+}
 
-()
+// Try using @scope("hex") and "fromBits" instead of "hex.fromBits"
+module Hex = {
+  @module("sjcl-complete") @val external fromBits: BitArray.t => string = "hex.fromBits"
+  @module("sjcl-complete") @val external toBits: string => BitArray.t = "hex.toBits"
+}
+
+module Utf8String = {
+  @module("sjcl-complete") @val external fromBits: BitArray.t => string = "utf8String.fromBits"
+  @module("sjcl-complete") @val external toBits: string => BitArray.t = "utf8String.toBits"
+}
+
+module Sha256 = {
+  @module("sjcl-complete") @val external hash: string => BitArray.t = "sha256.hash"
+}
+
+module Misc = {
+  @module("sjcl-complete") @val external pbkdf2: (string, string, int, int) => BitArray.t = "misc.pbkdf2"
+}
+
+module Cipher = {
+  type t
+  @send external encrypt: (t, BitArray.t) => BitArray.t = "encrypt"
+  module Aes = {
+    @module("sjcl-complete") @new external _new: BitArray.t => t = "cipher.aes"
+  }
+}
