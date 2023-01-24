@@ -1,0 +1,25 @@
+- [ ] sjcl.arrayBuffer
+- [x] sjcl.bitArray
+- [ ] sjcl.cipher
+- [ ] sjcl.codec
+- [ ] sjcl.codec.arrayBuffer
+- [ ] sjcl.codec.base32
+- [ ] sjcl.codec.base64
+- [ ] sjcl.codec.bytes
+- [x] sjcl.codec.hex
+- [x] sjcl.codec.utf8String
+- [ ] sjcl.codec.z85
+- [ ] sjcl.ecc
+- [ ] sjcl.exception
+- [x] sjcl.hash
+- [ ] sjcl.json
+- [ ] sjcl.keyexchange
+- [ ] sjcl.keyexchange.srp
+- [x] sjcl.misc
+- [ ] sjcl.mode
+- [ ] sjcl.mode.cbc
+- [ ] sjcl.mode.ccm
+- [ ] sjcl.mode.ctr
+- [ ] sjcl.mode.gcm
+- [ ] sjcl.mode.ocb2
+- [ ] sjcl.mode.ocb2progressive
