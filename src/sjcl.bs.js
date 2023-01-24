@@ -20,6 +20,14 @@ var Cipher = {
   Aes: Aes
 };
 
+var CCM = {};
+
+var Mode = {
+  CCM: CCM
+};
+
+var Random = {};
+
 exports.Bn = Bn;
 exports.BitArray = BitArray;
 exports.Hex = Hex;
@@ -27,4 +35,6 @@ exports.Utf8String = Utf8String;
 exports.Sha256 = Sha256;
 exports.Misc = Misc;
 exports.Cipher = Cipher;
+exports.Mode = Mode;
+exports.Random = Random;
 /* No side effect */

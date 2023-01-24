@@ -41,3 +41,14 @@ module Cipher = {
     @module("sjcl-complete") @new external _new: BitArray.t => t = "cipher.aes"
   }
 }
+
+module Mode = {
+  module CCM = {
+    @module("sjcl-complete") @val external encrypt: (Cipher.t, BitArray.t, BitArray.t) => BitArray.t = "mode.encrypt"
+    @module("sjcl-complete") @val external decrypt: (Cipher.t, BitArray.t, BitArray.t) => BitArray.t = "mode.decrypt"
+  }
+}
+
+module Random = {
+  @module("sjcl-complete") @val external randomWords: int => BitArray.t = "random.randomWords"
+}
