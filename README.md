@@ -9,7 +9,7 @@
 - [x] sjcl.codec.hex
 - [x] sjcl.codec.utf8String
 - [ ] sjcl.codec.z85
-- [ ] sjcl.ecc
+- [x] sjcl.ecc (partial)
 - [ ] sjcl.exception
 - [x] sjcl.hash
 - [ ] sjcl.json
