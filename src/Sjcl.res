@@ -1,3 +1,7 @@
+module BitArray = {
+  type t
+}
+
 module Bn = {
   type t
   @module("sjcl-with-all") @new external new: string => t = "bn"
@@ -7,48 +11,47 @@ module Bn = {
   @send external equals: (t, t) => bool = "equals"
   @send external mulmod: (t, t, t) => t = "mulmod"
   @send external powermod: (t, t, t) => t = "powermod"
+
+  @module("sjcl-with-all") @scope("bn") @val external fromBits: BitArray.t => t = "fromBits" 
 }
 
-module BitArray = {
-  type t
-}
-
-// Try using @scope("hex") and "fromBits" instead of "hex.fromBits"
-module Hex = {
-  @module("sjcl-with-all") @val external fromBits: BitArray.t => string = "hex.fromBits"
-  @module("sjcl-with-all") @val external toBits: string => BitArray.t = "hex.toBits"
-}
-
-module Utf8String = {
-  @module("sjcl-with-all") @val external fromBits: BitArray.t => string = "utf8String.fromBits"
-  @module("sjcl-with-all") @val external toBits: string => BitArray.t = "utf8String.toBits"
+module Codec = {
+  module Hex = {
+    @module("sjcl-with-all") @scope(("codec", "hex")) @val external fromBits: BitArray.t => string = "fromBits"
+    @module("sjcl-with-all") @scope(("codec", "hex")) @val external toBits: string => BitArray.t = "toBits"
+  }
+  
+  module Utf8String = {
+    @module("sjcl-with-all") @scope(("codec", "utf8String")) @val external fromBits: BitArray.t => string = "fromBits"
+    @module("sjcl-with-all") @scope(("codec", "utf8String")) @val external toBits: string => BitArray.t = "toBits"
+  }
 }
 
 module Sha256 = {
-  @module("sjcl-with-all") @val external hash: string => BitArray.t = "sha256.hash"
+  @module("sjcl-with-all") @scope(("hash","sha256")) @val external hash: string => BitArray.t = "hash"
 }
 
 module Misc = {
-  @module("sjcl-with-all") @val external pbkdf2: (string, string, int, int) => BitArray.t = "misc.pbkdf2"
+  @module("sjcl-with-all") @scope("misc") @val external pbkdf2: (string, string, int, int) => BitArray.t = "pbkdf2"
 }
 
 module Cipher = {
   type t
   @send external encrypt: (t, BitArray.t) => BitArray.t = "encrypt"
   module Aes = {
-    @module("sjcl-with-all") @new external _new: BitArray.t => t = "cipher.aes"
+    @module("sjcl-with-all") @scope("cipher") @new external _new: BitArray.t => t = "aes"
   }
 }
 
 module Mode = {
   module CCM = {
-    @module("sjcl-with-all") @val external encrypt: (Cipher.t, BitArray.t, BitArray.t) => BitArray.t = "mode.encrypt"
-    @module("sjcl-with-all") @val external decrypt: (Cipher.t, BitArray.t, BitArray.t) => BitArray.t = "mode.decrypt"
+    @module("sjcl-with-all") @scope("mode") @val external encrypt: (Cipher.t, BitArray.t, BitArray.t) => BitArray.t = "encrypt"
+    @module("sjcl-with-all") @scope("mode") @val external decrypt: (Cipher.t, BitArray.t, BitArray.t) => BitArray.t = "decrypt"
   }
 }
 
 module Random = {
-  @module("sjcl-with-all") @val external randomWords: int => BitArray.t = "random.randomWords"
+  @module("sjcl-with-all") @scope("random") @val external randomWords: int => BitArray.t = "randomWords"
 }
 
 module Ecc = {
@@ -72,20 +75,49 @@ module Ecc = {
 }
 
 module Ecdsa = {
+
+  type serialized_t = {
+    "type": string,
+    "secretKey": bool,
+    "point": string,
+    "exponent": string,
+    "curve": string
+  }
+
   module PublicKey = {
     type t
-    @send external _verify: (~hash: BitArray.t, ~signature: BitArray.t, ~fakeLegacyVersion: option<bool>) => bool = "verify"
-    let verify = (~hash, ~signature) => _verify(~hash, ~signature, ~fakeLegacyVersion=None)
+
+    @module("sjcl-with-all") @scope(("ecc", "ecdsa")) @new external new: (Ecc.Curve.t, Bn.t) => t = "publicKey"
+    @module("sjcl-with-all") @scope(("ecc", "ecdsa")) @new external new2: (Ecc.Curve.t, Ecc.Point.t) => t = "publicKey"
+
+    @send external verify: (t, ~hash: BitArray.t, ~signature: BitArray.t) => bool = "verify"
+    @send external serialize: (t) => serialized_t = "serialize"
+
+    let toHex = (t) => serialize(t)["point"]
+    let fromHex = (str) => new(Ecc.Curve.c256, Bn.fromBits(Hex.toBits(str)))
   }
 
   module SecretKey = {
     type t
-    @send external _sign: (~hash: BitArray.t, ~paranoia: int, ~fakeLegacyVersion: option<bool>, ~fixedKForTesting: option<Bn.t>) => BitArray.t = "sign"
-    let sign = (~hash, ~paranoia) => _sign(~hash, ~paranoia, ~fakeLegacyVersion=None, ~fixedKForTesting=None)
+
+    @module("sjcl-with-all") @scope(("ecc", "ecdsa")) @new external new: (Ecc.Curve.t, Bn.t) => t = "secretKey"
+
+    @send external sign: (t, BitArray.t) => BitArray.t = "sign"
+    @send external serialize: (t) => serialized_t = "serialize"
+
+    let toHex = (t) => serialize(t)["exponent"]
+    let fromHex = (str) => new(Ecc.Curve.c256, Bn.fromBits(Hex.toBits(str)))
   }
 
   type t = { pub: PublicKey.t, sec: SecretKey.t }
 
   @module("sjcl-with-all") @scope(("ecc", "ecdsa")) external _generateKeys: (option<Ecc.Curve.t>, option<int>, option<Bn.t>) => t = "generateKeys"
   let generateKeys = () => _generateKeys(None, None, None)
+
+  let generateKeysFromSecretKey = (sec) => _generateKeys(None, None, Some(sec))
+
+  let new = () => {
+    let keys = generateKeys()
+    (keys.pub, keys.sec)
+  }
 }
